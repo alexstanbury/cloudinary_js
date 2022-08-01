@@ -16,7 +16,9 @@ export function isIntersectionObserverSupported() {
  * @return {boolean} true if 'loading' property is defined for HTMLImageElement
  */
 export function isNativeLazyLoadSupported() {
-  return typeof HTMLImageElement === "object" && HTMLImageElement.prototype.loading;
+  return (
+    typeof HTMLImageElement === "object" && HTMLImageElement.prototype.loading
+  );
 }
 
 /**
@@ -36,13 +38,15 @@ export function detectIntersection(el, onIntersect) {
     // Detect intersection with given element using IntersectionObserver
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             onIntersect();
             observer.unobserve(entry.target);
           }
         });
-      }, {threshold: [0, 0.01]});
+      },
+      { threshold: [0, 0.01], rootMargin: "500px" }
+    );
     observer.observe(el);
   } catch (e) {
     onIntersect();
